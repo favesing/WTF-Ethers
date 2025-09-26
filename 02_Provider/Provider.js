@@ -5,12 +5,12 @@ import { ethers } from "ethers";
 
 // 利用公共rpc节点连接以太坊网络
 // 可以在 https://chainlist.org 上找到
-const ALCHEMY_MAINNET_URL = 'https://rpc.ankr.com/eth';
-const ALCHEMY_SEPOLIA_URL = 'https://rpc.sepolia.org';
+// const ALCHEMY_MAINNET_URL = 'https://rpc.ankr.com/eth';
+// const ALCHEMY_SEPOLIA_URL = 'https://rpc.sepolia.org';
 // 连接以太坊主网
-const providerETH = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL)
+const providerETH = new ethers.JsonRpcProvider(process.env.ALCHEMY_MAINNET_URL)
 // 连接Sepolia测试网
-const providerSepolia = new ethers.JsonRpcProvider(ALCHEMY_SEPOLIA_URL)
+const providerSepolia = new ethers.JsonRpcProvider(process.env.ALCHEMY_SEPOLIA_URL)
 
 const main = async () => {
     // 利用provider读取链上信息
@@ -52,7 +52,6 @@ const main = async () => {
     console.log("\n7. 给定合约地址查询合约bytecode，例子用的WETH地址")
     const code = await providerETH.getCode("0xc778417e063141139fce010982780140aa0cd5ab");
     console.log(code);
-
 }
 
 main()

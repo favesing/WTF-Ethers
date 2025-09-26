@@ -11,10 +11,11 @@ import { ethers } from "ethers";
 // 利用Alchemy的rpc节点连接以太坊网络
 // 准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
 const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
-const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+const provider = new ethers.JsonRpcProvider(process.env.INFURA_SEPOLIA_URL);
 
 // 利用私钥和provider创建wallet对象
-const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+let privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b6f2b'
+privateKey = process.env.PRIVATE_KEY_TEST_01
 const wallet = new ethers.Wallet(privateKey, provider)
 
 // ERC20的人类可读abi
@@ -40,13 +41,17 @@ const factoryERC20 = new ethers.ContractFactory(abiERC20, bytecodeERC20, wallet)
 const main = async () => {
     // 读取钱包内ETH余额
     const balanceETH = await provider.getBalance(wallet)
+    const network = await provider.getNetwork()
+    console.log(`网络: ${JSON.stringify(network)}`)
+    console.log(`钱包地址: ${wallet.address} 的ETH余额: ${ethers.formatEther(balanceETH)} ETH`)
+
 
     // 如果钱包ETH足够
     if(ethers.formatEther(balanceETH) > 0.002){
         // 1. 利用contractFactory部署ERC20代币合约
         console.log("\n1. 利用contractFactory部署ERC20代币合约")
         // 部署合约，填入constructor的参数
-        const contractERC20 = await factoryERC20.deploy("WTF Token", "WTF")
+        const contractERC20 = await factoryERC20.deploy("WTF Token", "WTF100")
         console.log(`合约地址: ${contractERC20.target}`);
         console.log("部署合约的交易详情")
         console.log(contractERC20.deploymentTransaction())
