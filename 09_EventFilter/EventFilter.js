@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 // 利用Alchemy的rpc节点连接以太坊网络
 // 准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
 const ALCHEMY_MAINNET_URL = 'https://eth-mainnet.g.alchemy.com/v2/oKmOQKbneVkxgHZfibs-iFhIlIAl6HDN';
-const provider = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL);
+const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_MAINNET_URL);
 
 // 合约地址
 const addressUSDT = '0xdac17f958d2ee523a2206206994597c13d831ec7'

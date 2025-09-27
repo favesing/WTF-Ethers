@@ -10,7 +10,7 @@ import { ethers } from "ethers";
 // 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
 const ALCHEMY_MAINNET_URL = 'https://eth-mainnet.g.alchemy.com/v2/oKmOQKbneVkxgHZfibs-iFhIlIAl6HDN';
 // 连接主网 provider
-const provider = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL);
+const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_MAINNET_URL);
 
 // USDT的合约地址
 const contractAddress = '0xdac17f958d2ee523a2206206994597c13d831ec7'

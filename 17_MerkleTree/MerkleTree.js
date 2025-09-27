@@ -24,7 +24,7 @@ console.log("\nProof:")
 console.log(proof)
 console.log("\nRoot:")
 console.log(root)
-
+throw new Error("此处仅为演示，请在本地运行")
 // 2. 创建provider和wallet
 // 准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
 const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';

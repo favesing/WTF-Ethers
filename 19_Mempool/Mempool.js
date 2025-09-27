@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 console.log("\n1. 连接 wss RPC")
 // 准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md 
 const ALCHEMY_MAINNET_WSSURL = 'wss://eth-mainnet.g.alchemy.com/v2/oKmOQKbneVkxgHZfibs-iFhIlIAl6HDN';
-const provider = new ethers.WebSocketProvider(ALCHEMY_MAINNET_WSSURL);
+const provider = new ethers.WebSocketProvider(process.env.ALCHEMY_MAINNET_WSS);
 let network = provider.getNetwork()
 // network.then(res => console.log(`[${(new Date).toLocaleTimeString()}] 连接到 chain ID ${res.chainId}`));
 
@@ -29,24 +29,24 @@ const main = async () => {
     // 3. 监听pending交易，获取txHash
     console.log("\n3. 监听pending交易，打印txHash。")
     provider.on("pending", async (txHash) => {
-        if (txHash && i < 100) {
+        if (txHash && i < 3) {
             // 打印txHash
             console.log(`[${(new Date).toLocaleTimeString()}] 监听Pending交易 ${i}: ${txHash} \r`);
             i++
-            }
+        }
     });
 
     // 4. 监听pending交易，并获取交易详情
     console.log("\n4. 监听pending交易，获取txHash，并输出交易详情。")
     let j = 0
     provider.on("pending", throttle(async (txHash) => {
-        if (txHash && j <= 100) {
+        if (txHash && j <= 3) {
             // 获取tx详情
             let tx = await provider.getTransaction(txHash);
             console.log(`\n[${(new Date).toLocaleTimeString()}] 监听Pending交易 ${j}: ${txHash} \r`);
             console.log(tx);
             j++
-            }
+        }
     }, 1000));
 };
 

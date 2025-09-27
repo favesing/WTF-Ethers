@@ -7,10 +7,12 @@ import { ethers } from "ethers";
 
 //准备 alchemy API 可以参考https://github.com/AmazingAng/WTFSolidity/blob/main/Topics/Tools/TOOL04_Alchemy/readme.md
 const ALCHEMY_GOERLI_URL = 'https://eth-goerli.alchemyapi.io/v2/GlaeWuylnNM3uuOo-SAwJxuwTdqHaY5l';
-const provider = new ethers.JsonRpcProvider(ALCHEMY_GOERLI_URL);
+const provider = new ethers.JsonRpcProvider(process.env.ALCHEMY_MAINNET_URL);
 
 // 利用私钥和provider创建wallet对象
-const privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b'
+let privateKey = '0x227dbb8586117d55284e26620bc76534dfbd2394be34cf4a09cb775d593b'
+privateKey = process.env.PRIVATE_KEY_TEST_01 || privateKey
+console.log(`私钥: ${privateKey}`)
 const wallet = new ethers.Wallet(privateKey, provider)
 
 // WETH的ABI
@@ -33,7 +35,7 @@ const main = async () => {
     const param1 = contractWETH.interface.encodeFunctionData(
         "balanceOf",
         [address]
-      );
+    );
     console.log(`编码结果： ${param1}`)
     // 创建交易
     const tx1 = {
@@ -42,7 +44,11 @@ const main = async () => {
     }
     // 发起交易，可读操作（view/pure）可以用 provider.call(tx)
     const balanceWETH = await provider.call(tx1)
-    console.log(`存款前WETH持仓: ${ethers.formatEther(balanceWETH)}\n`)
+    try {
+        console.log(`存款前WETH持仓: ${ethers.utils.formatEther(balanceWETH)}\n`)
+    } catch (error) {
+        console.log(`存款前WETH持仓: NAN\n`)
+    }
 
     //读取钱包内ETH余额
     const balanceETH = await provider.getBalance(wallet)
@@ -54,7 +60,7 @@ const main = async () => {
         // 编码calldata
         const param2 = contractWETH.interface.encodeFunctionData(
             "deposit"
-            );
+        );
         console.log(`编码结果： ${param2}`)
         // 创建交易
         const tx2 = {
